@@ -60,11 +60,11 @@ public class Poussin extends Piece {
 	}
 	
 	@Override
-	void draw(Canvas g, int x, int y, int size) {
+	void draw(Canvas g, Rect r) {
 		if (isPoule)
-			poule.draw(g, x, y, size);
+			poule.draw(g, r);
 		else
-			super.draw(g, x, y, size);
+			super.draw(g, r);
 	}
 
 	@Override

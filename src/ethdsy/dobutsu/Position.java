@@ -8,7 +8,7 @@ public class Position {
 	private static final int KING_DOWN = 6;
 
 	private final Piece[] pieces;
-	private final Piece[][] fastAccess = new Piece[DobutsuView.WIDTH][DobutsuView.HEIGHT];
+	private final Piece[][] fastAccess = new Piece[DobutsuView.GRID_WIDTH][DobutsuView.GRID_HEIGHT];
 	
 	Position(Piece[] pieces) {
 		this.pieces = pieces;
@@ -79,8 +79,8 @@ public class Position {
 	}
 
 	public void addFreeSquares(ArrayList<Point> points) {
-		for (int i = 0; i < DobutsuView.WIDTH; i++) {
-			for (int j = 0; j < DobutsuView.HEIGHT; j++) {
+		for (int i = 0; i < DobutsuView.GRID_WIDTH; i++) {
+			for (int j = 0; j < DobutsuView.GRID_HEIGHT; j++) {
 				if (fastAccess[i][j] == null)
 					points.add(new Point(i, j));
 			}
@@ -92,7 +92,7 @@ public class Position {
 		for (Iterator<Point> it = points.iterator(); it.hasNext();) {
 			Point point = it.next();
 			if (point != Poussin.PROMOTING && (point.x < 0 || point.y < 0 ||
-					point.x >= DobutsuView.WIDTH || point.y >= DobutsuView.HEIGHT)) {
+					point.x >= DobutsuView.GRID_WIDTH || point.y >= DobutsuView.GRID_HEIGHT)) {
 				it.remove();
 				continue;
 			}
@@ -103,7 +103,7 @@ public class Position {
 	}
 
 	Piece getPiece(int x, int y) {
-		if (x < DobutsuView.WIDTH)
+		if (x < DobutsuView.GRID_WIDTH)
 			return fastAccess[x][y];
 		
 		for (Piece piece : pieces) {
