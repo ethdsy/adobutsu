@@ -29,30 +29,30 @@ public class Game {
 			piece.init();
 		}
 	}
-//	
-//	public void start(final Board board, final Player player1, final Player player2, final int pause) {
-//		Player actualPlayer = player1;
-//		HashMap<Position, Integer> positions = new HashMap<Position, Integer>();
-//		boolean draw = false;
-//
-//		while(!hasLost(actualPlayer) && !draw) {
-//			int nb = addPosition(positions);
-//			draw = (nb == 3) || !actualPlayer.nextMove(board);
-//			board.repaint();
-//
-//			if (pause > 0)
-//				try {
-//					Thread.sleep(pause * 1000);
-//				} catch (InterruptedException e) {
-//				}
-//			actualPlayer = actualPlayer == player1 ? player2 : player1;
-//		}
-//
-//		String msg = draw ? "DRAW!" : "Player " + (actualPlayer.isUp() ? "DOWN" : "UP") + " won!"; 
+	
+	public void start(final DobutsuView board, final Player player1, final Player player2, final int pause) {
+		Player actualPlayer = player1;
+		HashMap<Position, Integer> positions = new HashMap<Position, Integer>();
+		boolean draw = false;
+
+		while(!hasLost(actualPlayer) && !draw) {
+			int nb = addPosition(positions);
+			draw = (nb == 3) || !actualPlayer.nextMove(board);
+			board.invalidate();
+
+			if (pause > 0)
+				try {
+					Thread.sleep(pause * 1000);
+				} catch (InterruptedException e) {
+				}
+			actualPlayer = actualPlayer == player1 ? player2 : player1;
+		}
+
+		String msg = draw ? "DRAW!" : "Player " + (actualPlayer.isUp() ? "DOWN" : "UP") + " won!"; 
 //		JOptionPane.showMessageDialog(board, 
 //				msg, "Game finished", JOptionPane.INFORMATION_MESSAGE);
-//		
-//	}
+		
+	}
 
 	private int addPosition(HashMap<Position, Integer> positions) {
 		Position newPos = new Position(getPosition());
@@ -65,10 +65,10 @@ public class Game {
 		return newValue;
 	}
 
-//	private boolean hasLost(Player actualPlayer) {
-//		boolean up = actualPlayer.isUp();
-//		return getPosition().hasLost(up);
-//	}
+	private boolean hasLost(Player actualPlayer) {
+		boolean up = actualPlayer.isUp();
+		return getPosition().hasLost(up);
+	}
 	
 	public Position getPosition() {
 		return gamePos;

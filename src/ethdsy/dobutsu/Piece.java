@@ -22,12 +22,8 @@ public abstract class Piece implements Cloneable {
 	}
 	
 	void draw(Canvas g, Rect r) {
-//		int intrinsicWidth = image.getMinimumWidth();
-//		int intrinsicHeight = image.getIntrinsicHeight();
-//		int dx = x + (size - intrinsicWidth) / 2;
-//		int dy = y + (size - intrinsicHeight) / 2;
 		Drawable toDraw = up ? imageR : image;
-		toDraw.setBounds(r); //x, y, x + intrinsicWidth, y + intrinsicHeight); 
+		toDraw.setBounds(r); 
 		toDraw.draw(g);
 	}
 	
