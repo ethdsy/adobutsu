@@ -23,7 +23,8 @@ public abstract class Piece implements Cloneable {
 	
 	void draw(Canvas g, Rect r) {
 		Drawable toDraw = up ? imageR : image;
-		toDraw.setBounds(r); 
+		r.inset(4, 4);
+		toDraw.setBounds(r);  
 		toDraw.draw(g);
 	}
 	

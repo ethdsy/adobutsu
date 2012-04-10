@@ -6,6 +6,14 @@ import java.util.*;
 public class Game {
 	private Position gamePos;
 	
+	private Player player1;
+	private Player player2;
+	private Player actualPlayer;
+	private DobutsuView board;
+	
+	private HashMap<Position, Integer> positions;
+    private boolean draw;
+
 	Game(Resources res) {
 		Piece[] pieces = new Piece[] {
 			new Giraffe(0, 0, true, res),
@@ -31,27 +39,30 @@ public class Game {
 	}
 	
 	public void start(final DobutsuView board, final Player player1, final Player player2, final int pause) {
-		Player actualPlayer = player1;
-		HashMap<Position, Integer> positions = new HashMap<Position, Integer>();
-		boolean draw = false;
+		this.player1 = player1;
+		this.player2 = player2;
+		actualPlayer = player1;
+		positions = new HashMap<Position, Integer>();
+		draw = false;
+		this.board = board;
 
-		while(!hasLost(actualPlayer) && !draw) {
-			int nb = addPosition(positions);
-			draw = (nb == 3) || !actualPlayer.nextMove(board);
-			board.invalidate();
-
-			if (pause > 0)
-				try {
-					Thread.sleep(pause * 1000);
-				} catch (InterruptedException e) {
-				}
-			actualPlayer = actualPlayer == player1 ? player2 : player1;
-		}
-
-		String msg = draw ? "DRAW!" : "Player " + (actualPlayer.isUp() ? "DOWN" : "UP") + " won!"; 
+//		while(!hasLost(actualPlayer) && !draw) {
+//			int nb = addPosition(positions);
+//			draw = (nb == 3) || !actualPlayer.nextMove(board);
+//			board.repaint();
+//
+//			if (pause > 0)
+//				try {
+//					Thread.sleep(pause * 1000);
+//				} catch (InterruptedException e) {
+//				}
+//			actualPlayer = actualPlayer == player1 ? player2 : player1;
+//		}
+//
+//		String msg = draw ? "DRAW!" : "Player " + (actualPlayer.isUp() ? "DOWN" : "UP") + " won!"; 
 //		JOptionPane.showMessageDialog(board, 
 //				msg, "Game finished", JOptionPane.INFORMATION_MESSAGE);
-		
+//		
 	}
 
 	private int addPosition(HashMap<Position, Integer> positions) {
@@ -72,5 +83,25 @@ public class Game {
 	
 	public Position getPosition() {
 		return gamePos;
+	}
+	
+	public void onNextMove() {
+		board.invalidate();
+		actualPlayer = actualPlayer == player1 ? player2 : player1;
+		
+		if (!hasLost(actualPlayer) && !draw) {
+			actualPlayer.nextMove();
+//			int nb = addPosition(positions);
+//			draw = (nb == 3) || !actualPlayer.nextMove(board);
+//			board.repaint();
+//
+//			if (pause > 0)
+//				try {
+//					Thread.sleep(pause * 1000);
+//				} catch (InterruptedException e) {
+//				}
+//			
+		}
+		
 	}
 }

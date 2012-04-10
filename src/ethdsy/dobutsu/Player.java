@@ -1,9 +1,10 @@
 package ethdsy.dobutsu;
 
-import android.graphics.Point;
 
+import android.graphics.*;
 
-public abstract class Player {
+public abstract class Player
+ {
 	
 	protected boolean up;
 
@@ -12,15 +13,6 @@ public abstract class Player {
 	}
 
 	public abstract boolean nextMove(DobutsuView board);
-
-	protected void eat(Piece pieceMangee) {
-		if (pieceMangee == null) {
-			return;
-		}
-		
-		pieceMangee.setOut(true);
-		pieceMangee.setUp(!pieceMangee.isUp());
-	}
 
 	public boolean isUp() {
 		return up;
