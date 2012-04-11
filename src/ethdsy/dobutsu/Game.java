@@ -90,7 +90,7 @@ public class Game {
 		actualPlayer = actualPlayer == player1 ? player2 : player1;
 		
 		if (!hasLost(actualPlayer) && !draw) {
-			actualPlayer.nextMove();
+			actualPlayer.nextMove(board);
 //			int nb = addPosition(positions);
 //			draw = (nb == 3) || !actualPlayer.nextMove(board);
 //			board.repaint();
