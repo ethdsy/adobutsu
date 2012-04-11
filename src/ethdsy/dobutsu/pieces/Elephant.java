@@ -1,8 +1,11 @@
-package ethdsy.dobutsu;
+package ethdsy.dobutsu.pieces;
 
-import android.content.res.*;
-import android.graphics.*;
-import java.util.*;
+import java.util.ArrayList;
+
+import android.content.res.Resources;
+import android.graphics.Point;
+import ethdsy.dobutsu.Position;
+import ethdsy.dobutsu.R;
 
 public class Elephant extends Piece {
 	private static final int IMAGE = R.drawable.elephant;

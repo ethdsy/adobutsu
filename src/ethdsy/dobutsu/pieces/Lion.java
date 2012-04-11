@@ -1,14 +1,17 @@
-package ethdsy.dobutsu;
+package ethdsy.dobutsu.pieces;
 
-import android.content.res.*;
-import android.graphics.*;
-import java.util.*;
+import java.util.ArrayList;
+
+import android.content.res.Resources;
+import android.graphics.Point;
+import ethdsy.dobutsu.Position;
+import ethdsy.dobutsu.R;
 
 public class Lion extends Piece {
 	private static final int IMAGE = R.drawable.lion;
 	private static final int IMAGER = R.drawable.lionr;
 	
-	Lion(int x, int y, boolean up, Resources res) {
+	public Lion(int x, int y, boolean up, Resources res) {
 		super(res.getDrawable(IMAGE),
 				res.getDrawable(IMAGER),
 				x, y, up);
@@ -67,7 +70,7 @@ public class Lion extends Piece {
 	}
 	
 	@Override
-	boolean isMovable(Position position) {
+	public boolean isMovable(Position position) {
 		return getPossibleMoves(position).length > 0;
 	}
 	

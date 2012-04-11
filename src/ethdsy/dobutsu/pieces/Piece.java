@@ -1,18 +1,23 @@
-package ethdsy.dobutsu;
+package ethdsy.dobutsu.pieces;
 
-import android.graphics.*;
-import android.graphics.drawable.*;
-import java.util.*;
+import java.util.ArrayList;
+
+import android.graphics.Canvas;
+import android.graphics.Point;
+import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
+import ethdsy.dobutsu.Position;
 
 public abstract class Piece implements Cloneable {
-	private final static Point OUT = new Point(10, 10); 
+	private final static Point OUT = new Point(10, 10);
+	private static final int PADDING = 20;
 	private final Drawable image;
 	private final Drawable imageR;
 	private int x;
 	private int y;
 	private boolean up;
 	private boolean out;
-	
+
 	Piece(Drawable image, Drawable imageR, int x, int y, boolean up) {
 		this.image = image;
 		this.imageR = imageR;
@@ -20,15 +25,15 @@ public abstract class Piece implements Cloneable {
 		this.y = y;
 		this.up = up;
 	}
-	
-	void draw(Canvas g, Rect r) {
+
+	public void draw(Canvas g, Rect r) {
 		Drawable toDraw = up ? imageR : image;
-		r.inset(4, 4);
-		toDraw.setBounds(r);  
+		r.inset(PADDING, PADDING);
+		toDraw.setBounds(r);
 		toDraw.draw(g);
 	}
-	
-	void setLocation(int x, int y) {
+
+	public void setLocation(int x, int y) {
 		this.x = x;
 		this.y = y;
 	}
@@ -58,15 +63,14 @@ public abstract class Piece implements Cloneable {
 	public boolean isOut() {
 		return out;
 	}
-	
+
 	public abstract void addPossibleMoves(ArrayList<Point> points);
-	
+
 	public Point[] getPossibleMoves(Position position) {
 		ArrayList<Point> points = new ArrayList<Point>();
 		if (out) {
 			position.addFreeSquares(points);
-		}
-		else {
+		} else {
 			addPossibleMoves(points);
 			position.removeFriendsAndBorders(this, points);
 		}
@@ -81,16 +85,16 @@ public abstract class Piece implements Cloneable {
 		position.removeFriendsAndBorders(this, points);
 		return points.size() > 0;
 	}
-	
+
 	public void init() {
 	}
 
 	public Point getLocation() {
 		return new Point(x, y);
 	}
-	
+
 	@Override
-	protected Piece clone() {
+	public Piece clone() {
 		try {
 			return (Piece) super.clone();
 		} catch (CloneNotSupportedException e) {
@@ -98,7 +102,7 @@ public abstract class Piece implements Cloneable {
 		}
 		return null;
 	}
-	
+
 	synchronized Drawable getImage(boolean promoting) {
 		return isUp() ? imageR : image;
 	}
@@ -133,6 +137,6 @@ public abstract class Piece implements Cloneable {
 			return false;
 		return true;
 	}
-	
+
 	public abstract boolean canMoveTo(int x, int y, Position pos, boolean withChess);
 }

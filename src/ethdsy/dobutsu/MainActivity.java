@@ -1,9 +1,7 @@
 package ethdsy.dobutsu;
 
-import android.app.*;
-import android.os.*;
-import android.view.*;
-import android.widget.*;
+import android.app.Activity;
+import android.os.Bundle;
 
 public class MainActivity extends Activity
 {

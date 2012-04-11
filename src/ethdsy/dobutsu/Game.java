@@ -1,7 +1,14 @@
 package ethdsy.dobutsu;
 
-import android.content.res.*;
-import java.util.*;
+import java.util.HashMap;
+
+import android.content.res.Resources;
+import ethdsy.dobutsu.pieces.Elephant;
+import ethdsy.dobutsu.pieces.Giraffe;
+import ethdsy.dobutsu.pieces.Lion;
+import ethdsy.dobutsu.pieces.Piece;
+import ethdsy.dobutsu.pieces.Poussin;
+import ethdsy.dobutsu.player.Player;
 
 public class Game {
 	private Position gamePos;

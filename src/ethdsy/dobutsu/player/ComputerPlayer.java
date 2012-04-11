@@ -1,9 +1,15 @@
-package ethdsy.dobutsu;
+package ethdsy.dobutsu.player;
 
 import java.util.ArrayList;
 import java.util.Random;
 
 import android.graphics.Point;
+import ethdsy.dobutsu.DobutsuView;
+import ethdsy.dobutsu.Position;
+import ethdsy.dobutsu.pieces.Elephant;
+import ethdsy.dobutsu.pieces.Giraffe;
+import ethdsy.dobutsu.pieces.Piece;
+import ethdsy.dobutsu.pieces.Poussin;
 
 public class ComputerPlayer extends Player {
 	private static final int POUSSIN_POINTS = 1;

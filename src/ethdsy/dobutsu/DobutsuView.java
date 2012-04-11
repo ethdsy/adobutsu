@@ -1,17 +1,30 @@
 package ethdsy.dobutsu;
 
-import android.graphics.*;
-import android.graphics.Matrix.*;
-import android.view.*;
-import android.widget.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Matrix;
+import android.graphics.Matrix.ScaleToFit;
+import android.graphics.Paint;
+import android.graphics.Point;
+import android.graphics.Rect;
+import android.graphics.RectF;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.ImageView;
+import ethdsy.dobutsu.pieces.Piece;
+import ethdsy.dobutsu.pieces.Poussin;
 
 public class DobutsuView extends ImageView {
 	private static final Point ORIGIN = new Point(25, 29);
 	private static final int SQUARE_SIZE = 115;
 	static final int GRID_WIDTH = 3;
 	static final int GRID_HEIGHT = 4;
-	private static final int SQUARE_PADDING = 20;
+
+	public Matrix matrix;
 
 	private Game game;
 
@@ -37,6 +50,8 @@ public class DobutsuView extends ImageView {
 	}
 
 	void init() {
+		matrix = new Matrix();
+
 		setClickable(true);
 		setKeepScreenOn(true);
 		setScaleType(ScaleType.FIT_START);
@@ -44,7 +59,13 @@ public class DobutsuView extends ImageView {
 		selected.clear();
 		bordered.clear();
 		game.init();
-//		game.start(this, new HumanPlayer(true), new HumanPlayer(false), 2);
+		setOnTouchListener(new OnTouchListener() {
+			public boolean onTouch(View arg0, MotionEvent arg1) {
+				fromScreen((int) arg1.getX(), (int) arg1.getY());
+				return false;
+			}
+		});
+		// game.start(this, new HumanPlayer(true), new HumanPlayer(false), 2);
 	}
 
 	void setGame(Game game) {
@@ -56,19 +77,17 @@ public class DobutsuView extends ImageView {
 		Paint paint = new Paint();
 		paint.setColor(Color.YELLOW);
 		for (Point point : selected) {
-			Rect rect = toScreen(point.x, point.y); 
-			canvas.drawRect(rect.left + 2, rect.top +
-			    2, rect.right - 6, rect.bottom - 6, paint); 
+			Rect rect = toScreen(point.x, point.y);
+			canvas.drawRect(rect.left + 2, rect.top + 2, rect.right - 6, rect.bottom - 6, paint);
 		}
-		 
-		paint.setColor(Color.RED); 
+
+		paint.setColor(Color.RED);
 		paint.setStrokeWidth(4f);
 		paint.setStyle(Paint.Style.STROKE);
-		for (Point point : bordered) { 
-		    Rect rect = toScreen(point.x, point.y); 
-			canvas.drawRect(rect.left, rect.top, rect.right - 2, rect.bottom - 2, paint); 
+		for (Point point : bordered) {
+			Rect rect = toScreen(point.x, point.y);
+			canvas.drawRect(rect.left, rect.top, rect.right - 2, rect.bottom - 2, paint);
 		}
-		
 
 		int nbPieceOutUp = 0;
 		int nbPieceOutDown = 0;
@@ -90,6 +109,8 @@ public class DobutsuView extends ImageView {
 	}
 
 	public void onSizeChanged(int x, int y, int w, int h) {
+		matrix.setRectToRect(new RectF(0, 0, 390, 500), new RectF(0, 0, getMeasuredWidth(), getMeasuredHeight()), ScaleToFit.CENTER);
+
 		invalidate();
 	}
 
@@ -109,33 +130,35 @@ public class DobutsuView extends ImageView {
 		RectF r = new RectF(origx, origy, origx + SQUARE_SIZE, origy + SQUARE_SIZE);
 
 		// It is strange, the view matrix does not match :/
-		Matrix m = new Matrix();
-		m.setRectToRect(new RectF(0, 0, 390, 500), new RectF(0, 0, getMeasuredWidth(), getMeasuredHeight()), ScaleToFit.CENTER);
 		// Matrix imageMatrix = getImageMatrix();
 		// System.out.println("JB>" + imageMatrix);
 		// imageMatrix.mapRect(r);
-		m.mapRect(r);
+		matrix.mapRect(r);
 
 		return new Rect((int) r.left, (int) r.top, (int) r.right, (int) r.bottom);
-//		return new Rect((int) r.left + SQUARE_PADDING, (int) r.top + SQUARE_PADDING, (int) r.right - SQUARE_PADDING, (int) r.bottom - SQUARE_PADDING);
 	}
 
-	public static Point fromScreen(int x, int y) {
-		if (x < ORIGIN.x || y < ORIGIN.y || y > ORIGIN.y + GRID_HEIGHT * SQUARE_SIZE)
-			return null;
-		Point p = new Point((x - ORIGIN.x) / SQUARE_SIZE, (y - ORIGIN.y) / SQUARE_SIZE);
+	public Point fromScreen(int x, int y) {
+
+		Point p = null;
+		Matrix inv = new Matrix(matrix);
+		boolean invert = inv.invert(inv);
+		if (invert) {
+			float[] pt = new float[] { x, y };
+			inv.mapPoints(pt);
+			if (pt[0] < ORIGIN.x || pt[1] < ORIGIN.y || pt[0] > ORIGIN.x + GRID_WIDTH * SQUARE_SIZE || pt[1] > ORIGIN.y + GRID_HEIGHT * SQUARE_SIZE)
+				return null;
+			p = new Point(((int) pt[0] - ORIGIN.x) / SQUARE_SIZE, ((int) pt[1] - ORIGIN.y) / SQUARE_SIZE);
+			//			System.out.println("JB> " + x + "," + y + " -> " + pt[0] + "," + pt[1] + " = " + p);
+		}
 		return p;
 	}
 
-	void removeFriendsAndBorders(Piece piece, ArrayList<Point> points)
-	{
+	void removeFriendsAndBorders(Piece piece, ArrayList<Point> points) {
 		boolean up = piece.isUp();
-		for (Iterator<Point> it = points.iterator(); it.hasNext();)
-		{
+		for (Iterator<Point> it = points.iterator(); it.hasNext();) {
 			Point point = it.next();
-			if (point != Poussin.PROMOTING && (point.x < 0 || point.y < 0 ||
-				point.x >= GRID_WIDTH || point.y >= GRID_HEIGHT))
-			{
+			if (point != Poussin.PROMOTING && (point.x < 0 || point.y < 0 || point.x >= GRID_WIDTH || point.y >= GRID_HEIGHT)) {
 				it.remove();
 				continue;
 			}
@@ -144,53 +167,54 @@ public class DobutsuView extends ImageView {
 				it.remove();
 		}
 	}
-	
-	public void clearSelected()
-	{ selected.clear(); }
-	
-	public void clearBordered()
-	{ bordered.clear(); }
-	
-	public void addSelected(Point point)
-	{ selected.add(point); }
-	
-	public void addBordered(Point p)
-	{ bordered.add(p); }
-	
-	public boolean isBordered(Point p)
-	{ return bordered.contains(p); }
-	
-	public void addFreeSquares(ArrayList<Point> points)
-	{ //add all squares
-		for (int i = 0; i < GRID_WIDTH; i++)
-		{ 
-			for (int j = 0; j < GRID_HEIGHT; j++)
-			{
-				points.add(new Point(i, j)); 
-			} 
-		}
-		
-		//remove all pieces 
-		for (Piece piece : game.getPieces())
-		{  
-			if (!piece.isOut())
-			{ 
-				points.remove(piece.getLocation()); 
-			}  
-		} 
+
+	public void clearSelected() {
+		selected.clear();
 	}
-	
-	Position getPosition()
-	{ return game.getPosition(); }
-	
+
+	public void clearBordered() {
+		bordered.clear();
+	}
+
+	public void addSelected(Point point) {
+		selected.add(point);
+	}
+
+	public void addBordered(Point p) {
+		bordered.add(p);
+	}
+
+	public boolean isBordered(Point p) {
+		return bordered.contains(p);
+	}
+
+	public void addFreeSquares(ArrayList<Point> points) { // add all squares
+		for (int i = 0; i < GRID_WIDTH; i++) {
+			for (int j = 0; j < GRID_HEIGHT; j++) {
+				points.add(new Point(i, j));
+			}
+		}
+
+		// remove all pieces
+		for (Piece piece : game.getPieces()) {
+			if (!piece.isOut()) {
+				points.remove(piece.getLocation());
+			}
+		}
+	}
+
+	public Position getPosition() {
+		return game.getPosition();
+	}
+
 	public void onClick(View v) {
-	
+
 	}
 
 	public boolean onTouch(View v, MotionEvent event) {
 		float x = event.getX();
 		float y = event.getY();
-		Point p = fromScreen((int)x, (int)y);
+		Point p = fromScreen((int) x, (int) y);
 
 		return true;
 	}

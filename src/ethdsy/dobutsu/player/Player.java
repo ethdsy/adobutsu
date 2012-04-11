@@ -1,7 +1,9 @@
-package ethdsy.dobutsu;
+package ethdsy.dobutsu.player;
 
 
-import android.graphics.*;
+import android.graphics.Point;
+import ethdsy.dobutsu.DobutsuView;
+import ethdsy.dobutsu.pieces.Poussin;
 
 public abstract class Player
  {

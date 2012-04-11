@@ -1,9 +1,13 @@
-package ethdsy.dobutsu;
+package ethdsy.dobutsu.player;
 
 import android.graphics.Point;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import ethdsy.dobutsu.DobutsuView;
+import ethdsy.dobutsu.Position;
+import ethdsy.dobutsu.pieces.Piece;
+import ethdsy.dobutsu.pieces.Poussin;
 
 public class HumanPlayer extends Player implements OnTouchListener {
 	private Point[] possibleMoves;

@@ -1,7 +1,13 @@
 package ethdsy.dobutsu;
 
-import android.graphics.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+
+import android.graphics.Point;
+import ethdsy.dobutsu.pieces.Lion;
+import ethdsy.dobutsu.pieces.Piece;
+import ethdsy.dobutsu.pieces.Poussin;
 
 public class Position {
 	private static final int KING_UP = 1;
@@ -15,7 +21,7 @@ public class Position {
 		fillFastAccess();
 	}
 	
-	Position(Position pos) {
+	public Position(Position pos) {
 		Piece[] otherPieces = pos.getPieces();
 		pieces = new Piece[otherPieces.length];
 		for (int i = 0; i < otherPieces.length; i++) {
@@ -57,12 +63,12 @@ public class Position {
 		return true;
 	}
 	
-	Lion getKing(boolean up) {
+	public Lion getKing(boolean up) {
 		Piece lion = getPieces()[up ? KING_UP : KING_DOWN];
 		return (Lion) lion;
 	}
 
-	Piece isChess(boolean up) {
+	public Piece isChess(boolean up) {
 		Piece lion = getKing(up);
 		Point lionLoc = lion.getLocation();
 		for (Piece piece : pieces) {
@@ -87,7 +93,7 @@ public class Position {
 		}
 	}
 	
-	void removeFriendsAndBorders(Piece piece, ArrayList<Point> points) {
+	public void removeFriendsAndBorders(Piece piece, ArrayList<Point> points) {
 		boolean up = piece.isUp();
 		for (Iterator<Point> it = points.iterator(); it.hasNext();) {
 			Point point = it.next();
@@ -102,7 +108,7 @@ public class Position {
 		}
 	}
 
-	Piece getPiece(int x, int y) {
+	public Piece getPiece(int x, int y) {
 		if (x < DobutsuView.GRID_WIDTH)
 			return fastAccess[x][y];
 		
@@ -127,7 +133,7 @@ public class Position {
 		return null;
 	}
 	
-	Piece[] getPieces(boolean up) {
+	public Piece[] getPieces(boolean up) {
 		ArrayList<Piece> myPieces = new ArrayList<Piece>(pieces.length);
 		for (Piece piece : pieces) {
 			if (piece.isUp() == up) {
@@ -137,7 +143,7 @@ public class Position {
 		return myPieces.toArray(new Piece[myPieces.size()]);
 	}
 	
-	Piece[] canEat(Piece target) {
+	public Piece[] canEat(Piece target) {
 		ArrayList<Piece> pieces = new ArrayList<Piece>();
 		for (Piece piece : getPieces()) {
 			if (!piece.isOut() &&
@@ -167,7 +173,7 @@ public class Position {
 		return false;
 	}
 
-	void applyMove(Piece fromPiece, Point toLocation) {
+	public void applyMove(Piece fromPiece, Point toLocation) {
 		Piece piece = getSimilarPiece(fromPiece);
 
 		boolean isPromoting = toLocation == Poussin.PROMOTING;
@@ -190,7 +196,7 @@ public class Position {
 		}
 	}
 	
-	boolean hasLost(boolean up) {
+	public boolean hasLost(boolean up) {
 		Piece checkingPiece = isChess(up);
 		return ( checkingPiece != null && 
 				!getKing(up).isMovable(this) &&

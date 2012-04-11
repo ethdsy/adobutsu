@@ -1,19 +1,24 @@
-package ethdsy.dobutsu;
+package ethdsy.dobutsu.pieces;
 
-import android.content.res.*;
-import android.graphics.*;
-import android.graphics.drawable.*;
-import java.util.*;
+import java.util.ArrayList;
+
+import android.content.res.Resources;
+import android.graphics.Canvas;
+import android.graphics.Point;
+import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
+import ethdsy.dobutsu.Position;
+import ethdsy.dobutsu.R;
 
 public class Poussin extends Piece {
 	private static final int IMAGE = R.drawable.poussin;
 	private static final int IMAGER = R.drawable.poussinr;
-	static final Point PROMOTING = new Point(42, 42);
+	public static final Point PROMOTING = new Point(42, 42);
 	
 	private Poule poule;
 	private boolean isPoule;
 	
-	Poussin(int x, int y, boolean up, Resources res) {
+	public Poussin(int x, int y, boolean up, Resources res) {
 		super(res.getDrawable(IMAGE),
 				res.getDrawable(IMAGER),
 				x, y, up);
@@ -37,7 +42,7 @@ public class Poussin extends Piece {
 	}
 
 	@Override
-	void setLocation(int x, int y) {
+	public void setLocation(int x, int y) {
 		super.setLocation(x, y);
 		poule.setLocation(x, y);
 		
@@ -60,7 +65,7 @@ public class Poussin extends Piece {
 	}
 	
 	@Override
-	void draw(Canvas g, Rect r) {
+	public void draw(Canvas g, Rect r) {
 		if (isPoule)
 			poule.draw(g, r);
 		else
@@ -80,12 +85,12 @@ public class Poussin extends Piece {
 		return super.getImage(promoting);
 	}
 	
-	boolean isPoule() {
+	public boolean isPoule() {
 		return isPoule;
 	}
 	
 	@Override
-	protected Piece clone() {
+	public Piece clone() {
 		Poussin cloned = (Poussin) super.clone();
 		cloned.poule = (Poule) poule.clone();
 		return cloned;
