@@ -80,6 +80,8 @@ public class HumanPlayer extends Player implements OnTouchListener {
 
 
 	public boolean onTouch(View v, MotionEvent event) {
+		if (event.getAction() != MotionEvent.ACTION_UP)
+			return false;
 		DobutsuView board = (DobutsuView) v;
 		selection = board.fromScreen((int) event.getX(), (int) event.getY());
 
@@ -108,6 +110,8 @@ public class HumanPlayer extends Player implements OnTouchListener {
 		board.addSelected(selection);
 		
 		unregister(board);
+		board.onFinishedMove();
+		
 		return true;
 	}	
 	

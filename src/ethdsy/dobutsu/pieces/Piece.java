@@ -10,7 +10,7 @@ import ethdsy.dobutsu.Position;
 
 public abstract class Piece implements Cloneable {
 	private final static Point OUT = new Point(10, 10);
-	private static final int PADDING = 20;
+	private static final int PADDING = 5;
 	private final Drawable image;
 	private final Drawable imageR;
 	private int x;

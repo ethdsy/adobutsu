@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.ImageView;
 import ethdsy.dobutsu.pieces.Piece;
 import ethdsy.dobutsu.pieces.Poussin;
+import ethdsy.dobutsu.player.*;
 
 public class DobutsuView extends ImageView {
 	private static final Point ORIGIN = new Point(25, 29);
@@ -65,7 +66,7 @@ public class DobutsuView extends ImageView {
 				return false;
 			}
 		});
-		// game.start(this, new HumanPlayer(true), new HumanPlayer(false), 2);
+		game.start(this, new HumanPlayer(true), new HumanPlayer(false), 2);
 	}
 
 	void setGame(Game game) {
@@ -146,7 +147,7 @@ public class DobutsuView extends ImageView {
 		if (invert) {
 			float[] pt = new float[] { x, y };
 			inv.mapPoints(pt);
-			if (pt[0] < ORIGIN.x || pt[1] < ORIGIN.y || pt[0] > ORIGIN.x + GRID_WIDTH * SQUARE_SIZE || pt[1] > ORIGIN.y + GRID_HEIGHT * SQUARE_SIZE)
+			if (pt[0] < ORIGIN.x || pt[1] < ORIGIN.y  || pt[1] > ORIGIN.y + GRID_HEIGHT * SQUARE_SIZE)
 				return null;
 			p = new Point(((int) pt[0] - ORIGIN.x) / SQUARE_SIZE, ((int) pt[1] - ORIGIN.y) / SQUARE_SIZE);
 			//			System.out.println("JB> " + x + "," + y + " -> " + pt[0] + "," + pt[1] + " = " + p);
@@ -205,6 +206,10 @@ public class DobutsuView extends ImageView {
 
 	public Position getPosition() {
 		return game.getPosition();
+	}
+	
+	public void onFinishedMove() {
+		game.onNextMove();
 	}
 
 	public void onClick(View v) {

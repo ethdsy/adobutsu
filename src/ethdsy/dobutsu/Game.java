@@ -53,6 +53,7 @@ public class Game {
 		draw = false;
 		this.board = board;
 
+        actualPlayer.nextMove(board);
 //		while(!hasLost(actualPlayer) && !draw) {
 //			int nb = addPosition(positions);
 //			draw = (nb == 3) || !actualPlayer.nextMove(board);
