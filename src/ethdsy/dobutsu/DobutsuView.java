@@ -1,23 +1,14 @@
 package ethdsy.dobutsu;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Matrix;
-import android.graphics.Matrix.ScaleToFit;
-import android.graphics.Paint;
-import android.graphics.Point;
-import android.graphics.Rect;
-import android.graphics.RectF;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.ImageView;
-import ethdsy.dobutsu.pieces.Piece;
-import ethdsy.dobutsu.pieces.Poussin;
+import android.app.*;
+import android.content.*;
+import android.graphics.*;
+import android.graphics.Matrix.*;
+import android.view.*;
+import android.widget.*;
+import ethdsy.dobutsu.pieces.*;
 import ethdsy.dobutsu.player.*;
+import java.util.*;
 
 public class DobutsuView extends ImageView {
 	private static final Point ORIGIN = new Point(25, 29);
@@ -60,12 +51,6 @@ public class DobutsuView extends ImageView {
 		selected.clear();
 		bordered.clear();
 		game.init();
-		setOnTouchListener(new OnTouchListener() {
-			public boolean onTouch(View arg0, MotionEvent arg1) {
-				fromScreen((int) arg1.getX(), (int) arg1.getY());
-				return false;
-			}
-		});
 		game.start(this, new HumanPlayer(true), new HumanPlayer(false), 2);
 	}
 
@@ -222,5 +207,30 @@ public class DobutsuView extends ImageView {
 		Point p = fromScreen((int) x, (int) y);
 
 		return true;
+	}
+	
+	void onGameWon(Player player) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+		builder.setTitle("Game Over")
+		    .setCancelable(false)
+			.setPositiveButton("OK" , new DialogInterface.OnClickListener() {		
+				public void onClick(DialogInterface p1, int p2)
+				{
+					init();
+				}
+			});
+			
+		if (player != null) {
+			builder.setMessage("Player " + 
+					   (player.isUp()  ? "up" : "down") +
+					   " won!");
+			
+		} 
+		else
+		    builder.setMessage("Draw!");
+			
+		AlertDialog alert = builder.create();
+		
+		alert.show();
 	}
 }

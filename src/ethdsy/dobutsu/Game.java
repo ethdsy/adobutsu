@@ -54,23 +54,6 @@ public class Game {
 		this.board = board;
 
         actualPlayer.nextMove(board);
-//		while(!hasLost(actualPlayer) && !draw) {
-//			int nb = addPosition(positions);
-//			draw = (nb == 3) || !actualPlayer.nextMove(board);
-//			board.repaint();
-//
-//			if (pause > 0)
-//				try {
-//					Thread.sleep(pause * 1000);
-//				} catch (InterruptedException e) {
-//				}
-//			actualPlayer = actualPlayer == player1 ? player2 : player1;
-//		}
-//
-//		String msg = draw ? "DRAW!" : "Player " + (actualPlayer.isUp() ? "DOWN" : "UP") + " won!"; 
-//		JOptionPane.showMessageDialog(board, 
-//				msg, "Game finished", JOptionPane.INFORMATION_MESSAGE);
-//		
 	}
 
 	private int addPosition(HashMap<Position, Integer> positions) {
@@ -95,9 +78,14 @@ public class Game {
 	
 	public void onNextMove() {
 		board.invalidate();
+		Player previousPlayer = actualPlayer;
 		actualPlayer = actualPlayer == player1 ? player2 : player1;
 		
-		if (!hasLost(actualPlayer) && !draw) {
+		if (draw)
+			board.onGameWon(null);
+		else if (hasLost(actualPlayer)) 
+			board.onGameWon(previousPlayer);
+		else {
 			actualPlayer.nextMove(board);
 //			int nb = addPosition(positions);
 //			draw = (nb == 3) || !actualPlayer.nextMove(board);
