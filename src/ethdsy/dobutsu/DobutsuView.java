@@ -12,9 +12,9 @@ import ethdsy.dobutsu.player.*;
 import java.util.*;
 
 public class DobutsuView extends BaseBoardView {
-	public DobutsuView(android.content.Context context) {
-		super(context);
-	}
+//	public DobutsuView(android.content.Context context) {
+//		super(context);
+//	}
 
 	public DobutsuView(android.content.Context context, android.util.AttributeSet attrs) {
 		super(context, attrs);
@@ -24,11 +24,11 @@ public class DobutsuView extends BaseBoardView {
 		super(context, attrs, defStyle);
 	}
 
-	void init(Resources resources) {
-        super.init(resources);
+	void init(Resources resources, android.util.AttributeSet attrs) {
+        super.init(resources, attrs);
 		Game game = new Game(resources);
 		setGame(game);
-        game.init();
+		game.init();
 		game.start(this, new HumanPlayer(true), new HumanPlayer(false), 2);
 	}
 
@@ -72,7 +72,7 @@ public class DobutsuView extends BaseBoardView {
 			.setPositiveButton("OK" , new DialogInterface.OnClickListener() {		
 				public void onClick(DialogInterface p1, int p2)
 				{
-					init(getContext().getResources());
+					init(getContext().getResources(), null);
 				}
 			});
 			

@@ -5,6 +5,7 @@ import android.content.*;
 import android.content.res.*;
 import android.graphics.*;
 import android.graphics.Matrix.*;
+import android.util.AttributeSet;
 import android.view.*;
 import android.widget.*;
 import ethdsy.dobutsu.pieces.*;
@@ -24,22 +25,22 @@ public class BaseBoardView extends ImageView {
 	private List<Point> selected = new ArrayList<Point>();
 	private List<Point> bordered = new ArrayList<Point>();
 
-	public BaseBoardView(android.content.Context context) {
-		super(context);
-		init(context.getResources());
-	}
+//	public BaseBoardView(android.content.Context context) {
+//		super(context);
+//		init(context.getResources(), null);
+//	}
 
 	public BaseBoardView(android.content.Context context, android.util.AttributeSet attrs) {
 		super(context, attrs);
-		init(context.getResources());
+		init(context.getResources(), attrs);
 	}
 
 	public BaseBoardView(android.content.Context context, android.util.AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
-        init(context.getResources());
+        init(context.getResources(), attrs);
 	}
 
-	void init(Resources resources) {
+	void init(Resources resources, AttributeSet attrs) {
 		setClickable(true);
 		setKeepScreenOn(true);
 		setScaleType(ScaleType.FIT_START);
@@ -50,6 +51,10 @@ public class BaseBoardView extends ImageView {
 
 	void setGame(Game game) {
 		this.game = game;
+	}
+	
+	Game getGame() {
+		return this.game;
 	}
 
 	public void onDraw(Canvas canvas) {

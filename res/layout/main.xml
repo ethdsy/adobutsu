@@ -5,10 +5,13 @@
     android:orientation="horizontal" >
 
     <ethdsy.dobutsu.DobutsuView
+        android:id="@+id/dobutsuview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-		android:src="@drawable/back" />
-	<ethdsy.dobutsu.EatenView
+        android:src="@drawable/back" />
+
+    <ethdsy.dobutsu.EatenView
+        android:id="@+id/eatenview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/back2" />
