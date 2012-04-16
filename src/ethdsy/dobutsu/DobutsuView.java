@@ -12,9 +12,11 @@ import ethdsy.dobutsu.player.*;
 import java.util.*;
 
 public class DobutsuView extends BaseBoardView {
-//	public DobutsuView(android.content.Context context) {
-//		super(context);
-//	}
+	private EatenView peer;
+	
+	public DobutsuView(android.content.Context context) {
+		super(context);
+	}
 
 	public DobutsuView(android.content.Context context, android.util.AttributeSet attrs) {
 		super(context, attrs);
@@ -24,14 +26,10 @@ public class DobutsuView extends BaseBoardView {
 		super(context, attrs, defStyle);
 	}
 
-	void init(Resources resources, android.util.AttributeSet attrs) {
-        super.init(resources, attrs);
-		Game game = new Game(resources);
-		setGame(game);
-		game.init();
-		game.start(this, new HumanPlayer(true), new HumanPlayer(false), 2);
+    void setPeer(EatenView eatenView) {
+		peer = eatenView;
 	}
-
+	
 	void removeFriendsAndBorders(Piece piece, ArrayList<Point> points) {
 		boolean up = piece.isUp();
 		for (Iterator<Point> it = points.iterator(); it.hasNext();) {
@@ -72,7 +70,7 @@ public class DobutsuView extends BaseBoardView {
 			.setPositiveButton("OK" , new DialogInterface.OnClickListener() {		
 				public void onClick(DialogInterface p1, int p2)
 				{
-					init(getContext().getResources(), null);
+					init(getContext().getResources());
 				}
 			});
 			
@@ -88,5 +86,46 @@ public class DobutsuView extends BaseBoardView {
 		AlertDialog alert = builder.create();
 		
 		alert.show();
+	}
+	
+	public void invalidate() {
+		super.invalidate();
+		if (peer != null)
+		    peer.invalidate();
+	}
+	
+	private boolean isPeerPoint(Point p) {
+		return p.x  >= GRID_WIDTH;
+	}
+	
+	private Point peerPoint(Point p) {
+		return new Point(p.x - GRID_WIDTH, p.y);
+	}
+	
+	public void addBordered(Point p) {
+		if (isPeerPoint(p))
+			peer.addBordered(p);
+		else super.addBordered(p);
+	}
+	
+	public void addSelected(Point p) {
+		if (isPeerPoint(p))
+	        peer.addSelected(p);
+	    else super.addSelected(p);
+	}
+	
+	public void clearBordered() {
+		super.clearBordered();
+		if (peer != null) peer.clearBordered();
+	}
+	
+	public void clearSelected() {
+		super.clearSelected();
+		if (peer!= null) peer.clearSelected();
+	}
+	
+	public void setOnTouchListener(OnTouchListener l) {
+		super.setOnTouchListener(l);
+		if (peer != null) peer.setOnTouchListener(l);
 	}
 }
