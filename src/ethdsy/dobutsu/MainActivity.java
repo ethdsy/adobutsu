@@ -13,7 +13,12 @@ public class MainActivity extends Activity
         super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		
-        DobutsuView dobutsuView = (DobutsuView)findViewById(R.id.dobutsuview);
+        startGame();
+	}
+
+	void startGame()
+	{
+		DobutsuView dobutsuView = (DobutsuView)findViewById(R.id.dobutsuview);
 		Game game = new Game(getResources());
 		dobutsuView.setGame(game);
 		
@@ -23,7 +28,5 @@ public class MainActivity extends Activity
 		
         game.init();
 		game.start(dobutsuView, new HumanPlayer(true), new HumanPlayer(false), 2);
-		
-		
 	}
 }

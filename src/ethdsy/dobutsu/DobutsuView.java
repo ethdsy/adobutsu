@@ -71,6 +71,8 @@ public class DobutsuView extends BaseBoardView {
 				public void onClick(DialogInterface p1, int p2)
 				{
 					init(getContext().getResources());
+					peer.init(getContext().getResources());
+					((MainActivity)getContext()).startGame();
 				}
 			});
 			
@@ -122,6 +124,12 @@ public class DobutsuView extends BaseBoardView {
 	public void clearSelected() {
 		super.clearSelected();
 		if (peer!= null) peer.clearSelected();
+	}
+	
+	public boolean isBordered(Point p) {
+		if (isPeerPoint(p)) 
+			return peer.isBordered(p);
+		return super.isBordered(p);
 	}
 	
 	public void setOnTouchListener(OnTouchListener l) {

@@ -1,13 +1,13 @@
 package ethdsy.dobutsu.player;
 
-import android.graphics.Point;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.View.OnTouchListener;
-import ethdsy.dobutsu.DobutsuView;
-import ethdsy.dobutsu.Position;
-import ethdsy.dobutsu.pieces.Piece;
-import ethdsy.dobutsu.pieces.Poussin;
+import android.app.*;
+import android.content.*;
+import android.graphics.*;
+import android.view.*;
+import android.view.View.*;
+import ethdsy.dobutsu.*;
+import ethdsy.dobutsu.pieces.*;
+import android.util.*;
 
 public class HumanPlayer extends Player implements OnTouchListener {
 	private Point[] possibleMoves;
@@ -82,19 +82,40 @@ public class HumanPlayer extends Player implements OnTouchListener {
 	public boolean onTouch(View v, MotionEvent event) {
 		if (event.getAction() != MotionEvent.ACTION_UP)
 			return false;
-		DobutsuView board = (DobutsuView) v;
-		selection = board.fromScreen((int) event.getX(), (int) event.getY());
-
-        if (piece == null) {
-			return firstTouch(board, selection);
-		} 
-	
-	    if (!contains(selection, possibleMoves) || selection.equals(piece.getLocation()))  {
-			initBoard(board);	
-			return true;
-		}
 		
-		return lastTouch(board, selection);
+		DobutsuView board = (DobutsuView) ((Activity)v.getContext()).findViewById(R.id.dobutsuview);
+		
+        try {
+		    selection = ((BaseBoardView)v).fromScreen((int) event.getX(), (int) event.getY());
+
+            if (piece == null) {
+			    return firstTouch(board, selection);
+		    } 
+	
+	        if (!contains(selection, possibleMoves) || selection.equals(piece.getLocation()))  {
+		    	initBoard(board);	
+			    return true;
+		    }
+		
+		    return lastTouch(board, selection);
+		}
+		catch (Exception ex) {
+			AlertDialog.Builder builder = new AlertDialog.Builder(board.getContext());
+			builder.setTitle("Error")
+				.setCancelable(false)
+				.setMessage(Log.getStackTraceString(ex))
+				.setPositiveButton("OK" , new DialogInterface.OnClickListener() {		
+					public void onClick(DialogInterface p1, int p2)
+					{
+					}
+				});
+	
+	        AlertDialog alert = builder.create();
+		
+		    alert.show();
+
+		}
+		return false;
 	}
 	
 	private boolean lastTouch(DobutsuView board, Point selection)

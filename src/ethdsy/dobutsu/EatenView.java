@@ -32,10 +32,10 @@ public class EatenView extends BaseBoardView {
 		for (Piece piece : game.getPosition().getPieces()) {
 			if (piece.isOut()) {
 				if (piece.isUp()) {
-					piece.setLocation(nbPieceOutUp % 3, nbPieceOutUp / 3);
+					piece.setLocation(GRID_WIDTH + (nbPieceOutUp % 3), nbPieceOutUp / 3);
 					nbPieceOutUp++;
 				} else {
-					piece.setLocation(nbPieceOutDown % 3, 2 + (nbPieceOutDown / 3));
+					piece.setLocation(GRID_WIDTH + (nbPieceOutDown % 3), 2 + (nbPieceOutDown / 3));
 					nbPieceOutDown++;
 				}
 				
@@ -45,4 +45,14 @@ public class EatenView extends BaseBoardView {
 
 	}
 
+    public Point fromScreen(int x, int y) {
+		Point p = super.fromScreen(x, y);
+		if (p != null)
+		    p.x += GRID_WIDTH;
+		return p;
+	}
+	
+	public Rect toScreen(int x, int y) {
+		return super.toScreen(x - GRID_WIDTH, y);
+	}
 }
