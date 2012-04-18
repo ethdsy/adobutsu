@@ -6,6 +6,8 @@ import ethdsy.dobutsu.player.*;
 
 public class MainActivity extends Activity
 {
+    private boolean oddGame;
+	
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -27,6 +29,7 @@ public class MainActivity extends Activity
 		dobutsuView.setPeer(eatenView);
 		
         game.init();
-		game.start(dobutsuView, new HumanPlayer(true), new HumanPlayer(false), 2);
+		oddGame = !oddGame;
+		game.start(dobutsuView, new ComputerPlayer(true, 1), new HumanPlayer(false), oddGame);
 	}
 }

@@ -97,7 +97,7 @@ public class BaseBoardView extends ImageView {
 		invalidate();
 	}
 
-	private Rect toScreen(int x, int y) {
+	protected Rect toScreen(int x, int y) {
 		float origx = ORIGIN.x + x * SQUARE_SIZE;
 		float origy = ORIGIN.y + y * SQUARE_SIZE;
 		RectF r = new RectF(origx, origy, origx + SQUARE_SIZE, origy + SQUARE_SIZE);

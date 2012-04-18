@@ -45,10 +45,10 @@ public class Game {
 		}
 	}
 	
-	public void start(final DobutsuView board, final Player player1, final Player player2, final int pause) {
+	public void start(final DobutsuView board, final Player player1, final Player player2, boolean firstUp) {
 		this.player1 = player1;
 		this.player2 = player2;
-		actualPlayer = player1;
+		actualPlayer = firstUp ? player1 : player2;
 		positions = new HashMap<Position, Integer>();
 		draw = false;
 		this.board = board;
@@ -85,19 +85,13 @@ public class Game {
 			board.onGameWon(null);
 		else if (hasLost(actualPlayer)) 
 			board.onGameWon(previousPlayer);
-		else {
-			actualPlayer.nextMove(board);
+		else if (!actualPlayer.nextMove(board))
+		    board.onGameWon(null);
+
 //			int nb = addPosition(positions);
 //			draw = (nb == 3) || !actualPlayer.nextMove(board);
 //			board.repaint();
 //
-//			if (pause > 0)
-//				try {
-//					Thread.sleep(pause * 1000);
-//				} catch (InterruptedException e) {
-//				}
-//			
-		}
 		
 	}
 }

@@ -10,6 +10,7 @@ import ethdsy.dobutsu.pieces.Elephant;
 import ethdsy.dobutsu.pieces.Giraffe;
 import ethdsy.dobutsu.pieces.Piece;
 import ethdsy.dobutsu.pieces.Poussin;
+import android.os.*;
 
 public class ComputerPlayer extends Player {
 	private static final int POUSSIN_POINTS = 1;
@@ -54,8 +55,26 @@ public class ComputerPlayer extends Player {
 //			});
 //		} catch (Throwable t) {
 //		}
-
+        doMove(board, pos, move);
+	    board.onFinishedMove();
 		return true;
+	}
+	
+	private void doMove(DobutsuView board, Position pos, Move move)
+	{
+		Point oldLocation = move.piece.getLocation();
+		Piece pieceMangee = pos.getPiece(move.location.x, move.location.y);
+        pos.applyMove(move.piece, move.location);
+		board.addSelected(move.location);
+		if (move.piece.isOut())
+		{
+			move.piece.setOut(false);
+		}
+		else
+		{
+			board.addSelected(oldLocation);
+		}
+
 	}
 
 	private Move oneMove(boolean up, Position pos, int l) {

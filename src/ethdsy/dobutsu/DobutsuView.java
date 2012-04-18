@@ -100,10 +100,6 @@ public class DobutsuView extends BaseBoardView {
 		return p.x  >= GRID_WIDTH;
 	}
 	
-	private Point peerPoint(Point p) {
-		return new Point(p.x - GRID_WIDTH, p.y);
-	}
-	
 	public void addBordered(Point p) {
 		if (isPeerPoint(p))
 			peer.addBordered(p);
