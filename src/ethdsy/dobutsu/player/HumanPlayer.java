@@ -88,6 +88,8 @@ public class HumanPlayer extends Player implements OnTouchListener {
 		
         try {
 		    selection = ((BaseBoardView)v).fromScreen((int) event.getX(), (int) event.getY());
+			if (selection == null)
+				return false;
 
             if (piece == null) {
 			    return firstTouch(board, selection);
@@ -140,7 +142,7 @@ public class HumanPlayer extends Player implements OnTouchListener {
 	private boolean firstTouch(DobutsuView board, Point selection)
 	{
 		Position pos = board.getPosition();
-		piece = pos.getPiece(selection.x, selection.y);
+		piece = pos == null ? null : pos.getPiece(selection.x, selection.y);
 		if (piece == null || piece.isUp() != up || !board.isBordered(piece.getLocation())) {
 			return false;
 		}
