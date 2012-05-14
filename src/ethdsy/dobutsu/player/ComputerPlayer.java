@@ -41,8 +41,12 @@ public class ComputerPlayer extends Player {
 			}
 			
 		    protected void onPostExecute(Move move) {
-				doMove(board, pos, move);
-				board.onFinishedMove();
+				if (move == null)
+					board.onGameWon(null);
+				else {
+				    doMove(board, pos, move);
+				    board.onFinishedMove();
+				}
 			}
 
 		}.execute(pos);
@@ -53,7 +57,6 @@ public class ComputerPlayer extends Player {
 	private void doMove(DobutsuView board, Position pos, Move move)
 	{
 		Point oldLocation = move.piece.getLocation();
-		Piece pieceMangee = pos.getPiece(move.location.x, move.location.y);
         pos.applyMove(move.piece, move.location);
 		board.addSelected(move.location);
 		if (move.piece.isOut())

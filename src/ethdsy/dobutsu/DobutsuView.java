@@ -63,7 +63,7 @@ public class DobutsuView extends BaseBoardView {
 		game.onNextMove();
 	}
 
-	void onGameWon(Player player) {
+	public void onGameWon(Player player) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 		builder.setTitle("Game Over")
 		    .setCancelable(false)

@@ -87,11 +87,12 @@ public class Game {
 			board.onGameWon(previousPlayer);
 		else if (!actualPlayer.nextMove(board))
 		    board.onGameWon(null);
+		else {
+		    int nb = addPosition(positions);
+			if (nb == 3)
+				board.onGameWon(null);
+		}
 
-//			int nb = addPosition(positions);
-//			draw = (nb == 3) || !actualPlayer.nextMove(board);
-//			board.repaint();
-//
 		
 	}
 }

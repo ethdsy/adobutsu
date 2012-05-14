@@ -154,20 +154,11 @@ public class HumanPlayer extends Player implements OnTouchListener {
 		Piece checkingPiece = pos.isChess(up);
 		possibleMoves = (checkingPiece == null || pos.getKing(up) == piece) ? piece.getPossibleMoves(pos) : new Point[] { checkingPiece
 			.getLocation() };
-		boolean isPromoting = isPromoting(possibleMoves);
-		if (isPromoting) {
-			selection = Poussin.PROMOTING;
-			lastTouch(board, selection);
-			// TODO promotion (canap� ?)
-//				int result = JOptionPane.showConfirmDialog(board, new JLabel(new ImageIcon(piece.getImage(true))), "Promotion",
-//						JOptionPane.YES_NO_OPTION);
-//				p = result == JOptionPane.YES_OPTION ? Poussin.PROMOTING : piece.getLocation();
-		} else {
-			for (Point move : possibleMoves) {
-				board.addBordered(move);
-			}
-			board.invalidate();
+		for (Point move : possibleMoves) {
+			board.addBordered(move);
 		}
+		board.invalidate();
+
 
         // wait for target position
 		return true;	

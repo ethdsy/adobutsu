@@ -35,8 +35,6 @@ public class Poussin extends Piece {
 	public void addPossibleMoves(ArrayList<Point> points) {
 		if (isPoule) 
 			poule.addPossibleMoves(points);
-		else if (isPromoting())
-			points.add(PROMOTING);
 		else
 			points.add(new Point(getX(), getY() + (isUp() ? 1 : -1)));
 	}
