@@ -16,7 +16,20 @@ public class BaseBoardView extends ImageView {
 	static final int SQUARE_SIZE = 115;
 	static final int GRID_WIDTH = 3;
 	static final int GRID_HEIGHT = 4;
+	
+	private static final Paint SELECTED_PAINT;
+	private static final Paint BORDERED_PAINT;
+	
+	static {
+		SELECTED_PAINT = new Paint();
+		SELECTED_PAINT.setColor(Color.YELLOW);
 
+		BORDERED_PAINT = new Paint();
+		BORDERED_PAINT.setColor(Color.RED);
+		BORDERED_PAINT.setStrokeWidth(4f);
+		BORDERED_PAINT.setStyle(Paint.Style.STROKE);
+	}
+	
 	private Matrix matrix = new Matrix();
 
 	protected Game game;
@@ -54,19 +67,14 @@ public class BaseBoardView extends ImageView {
 
 	public void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
-		Paint paint = new Paint();
-		paint.setColor(Color.YELLOW);
 		for (Point point : selected) {
 			Rect rect = toScreen(point.x, point.y);
-			canvas.drawRect(rect.left + 2, rect.top + 2, rect.right - 6, rect.bottom - 6, paint);
+			canvas.drawRect(rect.left + 2, rect.top + 2, rect.right - 2, rect.bottom - 2, SELECTED_PAINT);
 		}
 
-		paint.setColor(Color.RED);
-		paint.setStrokeWidth(4f);
-		paint.setStyle(Paint.Style.STROKE);
 		for (Point point : bordered) {
 			Rect rect = toScreen(point.x, point.y);
-			canvas.drawRect(rect.left, rect.top, rect.right - 2, rect.bottom - 2, paint);
+			canvas.drawRect(rect.left, rect.top, rect.right - 2, rect.bottom - 2, BORDERED_PAINT);
 		}
 
         drawPieces(canvas); 

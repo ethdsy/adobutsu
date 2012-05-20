@@ -6,7 +6,7 @@ import ethdsy.dobutsu.player.*;
 
 public class MainActivity extends Activity
 {
-    private boolean oddGame;
+    private boolean oddGame = true;
 	
     /** Called when the activity is first created. */
     @Override

@@ -30,33 +30,23 @@ public class ComputerPlayer extends Player {
 	public boolean nextMove(final DobutsuView board) {
 		board.clearBordered();
 		board.clearSelected();
+		board.invalidate();
 
 		final Position pos = board.getPosition();
-		final Move move = oneMove(up, pos, level);
-		if (move == null)
-			return false;
+		new AsyncTask<Position, Void, Move>(){
 
-//		try {
-//			SwingUtilities.invokeAndWait(new Runnable(){
-//				@Override
-//				public void run() {
-//					Point oldLocation = move.piece.getLocation();
-//					Piece pieceMangee = pos.getPiece(move.location.x, move.location.y);
-//					eat(pieceMangee);
-//					move.piece.setLocation(move.location.x, move.location.y);
-//					
-//					board.addSelected(move.location);
-//					if (move.piece.isOut()) {
-//						move.piece.setOut(false);
-//					} else {
-//						board.addSelected(oldLocation);
-//					}
-//				}
-//			});
-//		} catch (Throwable t) {
-//		}
-        doMove(board, pos, move);
-	    board.onFinishedMove();
+			protected ComputerPlayer.Move doInBackground(Position[] p1)
+			{
+				return oneMove(up, pos, level);
+			}
+			
+		    protected void onPostExecute(Move move) {
+				doMove(board, pos, move);
+				board.onFinishedMove();
+			}
+
+		}.execute(pos);
+
 		return true;
 	}
 	

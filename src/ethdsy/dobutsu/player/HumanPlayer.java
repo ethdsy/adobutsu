@@ -71,6 +71,7 @@ public class HumanPlayer extends Player implements OnTouchListener {
 	}
 
 	private boolean contains(Point p, Point[] points) {
+		if (p == null) return false;
 		for (Point point : points) {
 			if (p.equals(point))
 				return true;
